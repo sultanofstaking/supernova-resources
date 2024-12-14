@@ -4,7 +4,11 @@ Supernova EVM extension-chain. An EVM compatible [Network of Momentum](https://g
 
 ## Getting Started
 
-To get started with the Supernova `mainnet`, use the `./scripts/sn_mainnet_setup.sh` script.
+To get started with the Supernova `mainnet`, use the `./scripts/sn_mainnet_setup.sh` script:
+
+```bash
+wget -O sn_mainnet_setup.sh https://raw.githubusercontent.com/AliensZone/supernova-resources/refs/heads/main/scripts/sn_mainnet_setup.sh && chmod +x sn_mainnet_setup.sh && ./sn_mainnet_setup.sh
+```
 
 ### Supernova EVM extension-chain mainnet specifications
 
