@@ -124,8 +124,20 @@ $BINARY_PATH version
 check_error "Failed to verify binary installation"
 
 # Initialize the node and setup genesis
-echo "Initializing Supernova node..."
-$BINARY_PATH init $MONIKER --chain-id $CHAIN_ID
+if [ -f ~/.supernova/config/genesis.json ]; then
+    echo "Existing node configuration found..."
+    read -p "Do you want to reinitialize the node? This will overwrite existing configuration (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "Backing up existing genesis..."
+        cp ~/.supernova/config/genesis.json ~/.supernova/config/genesis.json.backup
+        echo "Initializing Supernova node..."
+        $BINARY_PATH init $MONIKER --chain-id $CHAIN_ID --overwrite
+    fi
+else
+    echo "Initializing Supernova node..."
+    $BINARY_PATH init $MONIKER --chain-id $CHAIN_ID
+fi
 
 # Setting up genesis
 echo "Downloading genesis.json..."
