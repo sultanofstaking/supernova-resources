@@ -232,7 +232,21 @@ for i in {1..3}; do
     fi
 done
 
-$BINARY_PATH status 2>&1 | jq '.SyncInfo'
+# Wait for the node to start responding to status queries
+echo "Waiting for node to become responsive..."
+for i in {1..12}; do
+    if STATUS_OUTPUT=$($BINARY_PATH status 2>&1) && echo "$STATUS_OUTPUT" | jq '.SyncInfo' >/dev/null 2>&1; then
+        echo "$STATUS_OUTPUT" | jq '.SyncInfo'
+        break
+    elif [ $i -eq 12 ]; then
+        echo "Warning: Node started but status check failed. Check logs for details."
+        echo "Recent logs:"
+        sudo journalctl -u supernova.service -n 50 --no-pager
+    else
+        echo "Waiting for node to respond (attempt $i/12)..."
+        sleep 5
+    fi
+done
 
 echo "Supernova node setup and state sync completed successfully!"
 echo "Logs are available in $LOGFILE"
