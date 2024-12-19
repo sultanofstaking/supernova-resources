@@ -181,8 +181,8 @@ sed -i.bak -E \
     "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
     s|^(db_backend[[:space:]]+=[[:space:]]+).*$|\1\"rocksdb\"| ; \
     s|^(db_dir[[:space:]]+=[[:space:]]+).*$|\1\"data/db\"| ; \
-    s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"2a3cd2768826aed5792593a2d6c8f6b28435a2a7@172.245.233.>
-    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"https://sync.novascan.io,https://sync.supernova>
+    s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"2a3cd2768826aed5792593a2d6c8f6b28435a2a7@172.245.233.171:26656\"| ; \
+    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"https://sync.novascan.io,https://sync.supernova.zenon.red\"| ; \
     s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
     s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
     s|^(addr_book_strict[[:space:]]+=[[:space:]]+).*$|\1false|" \
