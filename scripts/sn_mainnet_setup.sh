@@ -156,6 +156,19 @@ if [ "$GENESIS_HASH" != "$DOWNLOADED_HASH" ]; then
 fi
 echo "Genesis hash verified successfully"
 
+# Ensure database directory exists
+echo "Ensuring database directory exists..."
+DB_DIR="/root/.supernova/data/db"
+
+if [ ! -d "$DB_DIR" ]; then
+    echo "Directory $DB_DIR does not exist. Creating it..."
+    sudo mkdir -p "$DB_DIR"
+    sudo chmod -R 755 "/root/.supernova"
+    echo "Directory created successfully."
+else
+    echo "Directory $DB_DIR already exists. Skipping creation."
+fi
+
 # Configure state sync and general settings
 echo "Configuring state sync and node settings..."
 LATEST_HEIGHT=$(curl -s https://sync.novascan.io/block | jq -r .result.block.header.height)
@@ -165,10 +178,11 @@ TRUST_HASH=$(curl -s "https://sync.novascan.io/block?height=$BLOCK_HEIGHT" | jq 
 # Update config.toml settings
 echo "Configuring config.toml..."
 sed -i.bak -E \
-    "s|^(db_backend[[:space:]]+=[[:space:]]+).*$|\1\"rocksdb\"| ; \
-    s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"2a3cd2768826aed5792593a2d6c8f6b28435a2a7@172.245.233.171:26656\"| ; \
-    s|^\[statesync\][^\[]*enable[[:space:]]*=[[:space:]]*.*|\[statesync\]\nenable = true| ; \
-    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"https://sync.novascan.io,https://sync.supernova.zenon.red\"| ; \
+    "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+    s|^(db_backend[[:space:]]+=[[:space:]]+).*$|\1\"rocksdb\"| ; \
+    s|^(db_dir[[:space:]]+=[[:space:]]+).*$|\1\"data/db\"| ; \
+    s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"2a3cd2768826aed5792593a2d6c8f6b28435a2a7@172.245.233.>
+    s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"https://sync.novascan.io,https://sync.supernova>
     s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
     s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
     s|^(addr_book_strict[[:space:]]+=[[:space:]]+).*$|\1false|" \
