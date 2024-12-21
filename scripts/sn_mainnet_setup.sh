@@ -178,8 +178,8 @@ sed -i.bak -E \
 echo "Configuring app.toml..."
 sed -i.bak -E \
     "s|^(minimum-gas-prices[[:space:]]+=[[:space:]]+).*$|\1\"0stake\"| ; \
-    s|^\[json-rpc\][^\[]*enable[[:space:]]*=[[:space:]]*.*|\[json-rpc\]\nenable = false| ; \
-    s|^\[memiavl\][^\[]*enable[[:space:]]*=[[:space:]]*.*|\[memiavl\]\nenable = true|" \
+    /^\[json-rpc\]/,/^\[/{s|^(enable[[:space:]]*=[[:space:]]*).*|\1false|} ; \
+    /^\[memiavl\]/,/^\[/{s|^(enable[[:space:]]*=[[:space:]]*).*|\1true|}" \
     ~/.supernova/config/app.toml
 
 # Create systemd service file
