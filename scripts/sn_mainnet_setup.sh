@@ -167,7 +167,7 @@ echo "Configuring config.toml..."
 sed -i.bak -E \
     "s|^(db_backend[[:space:]]+=[[:space:]]+).*$|\1\"rocksdb\"| ; \
     s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"2a3cd2768826aed5792593a2d6c8f6b28435a2a7@172.245.233.171:26656\"| ; \
-    s|^\[statesync\][^\[]*enable[[:space:]]*=[[:space:]]*.*|\[statesync\]\nenable = true| ; \
+    /^\[statesync\]/,/^\[/{s|^(enable[[:space:]]*=[[:space:]]*).*|\1true|} ; \
     s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"https://sync.novascan.io,https://sync.supernova.zenon.red\"| ; \
     s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
     s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
